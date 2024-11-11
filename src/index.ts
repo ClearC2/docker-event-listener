@@ -10,7 +10,7 @@ const envSchema = z.object({
   HOST_ID_PAYLOAD_KEY: z.string(),
 
   // Where the events should be sent
-  TARGET_API_HOST: z.string(),
+  TARGET_API_ENDPOINT: z.string(),
 
   // Which events to send (https://docs.docker.com/reference/cli/docker/system/events/#containers)
   CONTAINER_EVENTS: z
@@ -97,7 +97,7 @@ async function sendContainerEvent(event: z.infer<typeof containerEventSchema>) {
   };
   console.log("sending event", payload);
   try {
-    const res = await fetch(`${env.TARGET_API_HOST}/api/docker/event`, {
+    const res = await fetch(env.TARGET_API_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
