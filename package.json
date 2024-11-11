@@ -1,0 +1,30 @@
+{
+  "name": "docker-event-listener",
+  "version": "1.0.0",
+  "description": "Listen and send docker events to an api for storage",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "author": "David Adams",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">= 20.12.0"
+  },
+  "dependencies": {
+    "dockerode": "^4.0.2",
+    "dotenv": "^16.4.5",
+    "tiny-invariant": "^1.3.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/dockerode": "^3.3.31",
+    "prettier": "3.3.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
