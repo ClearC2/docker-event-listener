@@ -1,6 +1,6 @@
 {
   "name": "docker-event-listener",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Listen and send docker events to an api for storage",
   "main": "src/index.ts",
   "scripts": {

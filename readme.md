@@ -9,15 +9,17 @@ The following environment variables need to be set. Can be an `.env` file in the
 DOCKER_HOST_ID=abc
 HOST_ID_PAYLOAD_KEY=oson_algorithm_environment_unid
 TARGET_API_ENDPOINT=http://localhost:6089/api/docker/event
+TARGET_API_TOKEN=abc
 CONTAINER_EVENTS=start,stop,die
 DOCKER_SOCKET_PATH=/var/run/docker.sock
 ```
 
-- `DOCKER_HOST_ID` - Some unique identifier to correlate the events to a Docker host
+- `DOCKER_HOST_ID` - Some unique identifier to correlate the events to a Docker host.
 - `HOST_ID_PAYLOAD_KEY` - The json payload key that will contain the `DOCKER_HOST_ID`.
-- `TARGET_API_ENDPOINT` - Where to send the events
-- `CONTAINER_EVENTS` - a comma delimitted list of which events to listen to. A complete list of events can be found [here](https://docs.docker.com/reference/cli/docker/system/events/#containers).
-- `DOCKER_SOCKET_PATH` - where the Docker socket lives
+- `TARGET_API_ENDPOINT` - Where to send the events.
+- `TARGET_API_TOKEN` - Will be included as `token` in the request payload.
+- `CONTAINER_EVENTS` - A comma delimitted list of which events to listen to. A complete list of events can be found [here](https://docs.docker.com/reference/cli/docker/system/events/#containers).
+- `DOCKER_SOCKET_PATH` - Where the Docker socket lives.
 
 ## Setup
 Install the dependencies

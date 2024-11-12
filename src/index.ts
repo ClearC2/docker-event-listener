@@ -12,6 +12,9 @@ const envSchema = z.object({
   // Where the events should be sent
   TARGET_API_ENDPOINT: z.string(),
 
+  // auth token to include in request
+  TARGET_API_TOKEN: z.string(),
+
   // Which events to send (https://docs.docker.com/reference/cli/docker/system/events/#containers)
   CONTAINER_EVENTS: z
     .string()
@@ -87,6 +90,7 @@ async function startEventListener() {
 async function sendContainerEvent(event: z.infer<typeof containerEventSchema>) {
   const payload = {
     [env.HOST_ID_PAYLOAD_KEY]: env.DOCKER_HOST_ID,
+    token: env.TARGET_API_TOKEN,
     docker_event: {
       event_time: event.time,
       container_name: event.Actor.Attributes.name,
