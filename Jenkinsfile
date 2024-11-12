@@ -45,7 +45,7 @@ pipeline {
                     docker pull ${env.DOCKER_IMAGE}
                     docker stop docker-event-listener || true
                     docker rm docker-event-listener || true
-                    docker run --env-file=/srv/docker-event-listener/app.env --name docker-event-listener --restart unless-stopped -d ${env.DOCKER_IMAGE}
+                    docker run --env-file=/srv/docker-event-listener/app.env --name docker-event-listener --restart unless-stopped -d -v /var/run/docker.sock:/var/run/docker.sock ${env.DOCKER_IMAGE}
                     docker image prune -a --filter "until=2h" -f || true
 HERE"""
             }
