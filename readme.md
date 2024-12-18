@@ -54,13 +54,23 @@ docker run -d \
   --unless-stopped \
   --name docker-event-listener \
   # replace with wherever your .env lives
-  --env-file /usr/apps/docker-event-listener/.env
+  --env-file /srv/docker-event-listener/app.env
   -v /var/run/docker.sock:/var/run/docker.sock \
-  clearc2/docker-event-listener:0.0.1
-```
+  -p 3003:3003 \
+  clearc2/docker-event-listener:0.0.2
+  ```
 
 ### Docker packaging
 ```shell
-docker build -t clearc2/docker-event-listener:0.0.1 .
-docker push clearc2/docker-event-listener:0.0.1
+docker build --platform=linux/amd64 -t clearc2/docker-event-listener:0.0.3 .
+docker push clearc2/docker-event-listener:0.0.4
 ```
+
+### Testing
+To test if the restart count goes up, you can forcefully kill a container that **has a restart policy**.
+
+```shell
+docker exec <container-id> kill 1
+```
+
+Then visit the metricts endpoint: http://localhost:3003/metrics
