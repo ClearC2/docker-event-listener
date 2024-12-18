@@ -9,10 +9,8 @@ async function getRestartCountsForPrometheus() {
     // Fetch all containers
     const containers = await docker.listContainers({ all: true });
 
-    // Build Prometheus metrics string
-    let metrics =
-      "# HELP docker_container_restart_count Restart count of Docker containers\n";
-    metrics += "# TYPE docker_container_restart_count counter\n";
+    const restartMetrics = [];
+    const upMetrics = [];
 
     for (const containerInfo of containers) {
       const container = docker.getContainer(containerInfo.Id);
@@ -24,8 +22,21 @@ async function getRestartCountsForPrometheus() {
 
       // Escape any special characters in container names for Prometheus format
       const escapedName = containerName.replace(/"/g, '\\"');
-      metrics += `docker_container_restart_count{name="${escapedName}"} ${restartCount}\n`;
+      restartMetrics.push(
+        `docker_container_restart_count{name="${escapedName}"} ${restartCount}`,
+      );
+      upMetrics.push(
+        `docker_container_up{name="${escapedName}"} ${inspectData.State.Running ? "1" : "0"}`,
+      );
     }
+
+    let metrics =
+      "# HELP docker_container_restart_count Restart count of Docker containers\n";
+    metrics += "# TYPE docker_container_restart_count counter\n";
+    metrics += restartMetrics.join("\n");
+    metrics += "\n# HELP docker_container_up Status of Docker containers\n";
+    metrics += "# TYPE docker_container_up gauge\n";
+    metrics += upMetrics.join("\n");
 
     return metrics;
   } catch (error) {
