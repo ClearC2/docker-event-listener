@@ -66,6 +66,14 @@ docker build --platform=linux/amd64 -t clearc2/docker-event-listener:0.0.5 .
 docker push clearc2/docker-event-listener:0.0.5
 ```
 
+### Prometheus metrics
+
+The exporter at port `:3003/metrics` exports the following:
+```sh
+# TYPE docker_container_restart_count counter
+# TYPE docker_container_up gauge
+```
+
 ### Testing
 To test if the restart count goes up, you can forcefully kill a container that **has a restart policy**.
 
