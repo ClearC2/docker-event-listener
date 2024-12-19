@@ -11,6 +11,7 @@ async function getRestartCountsForPrometheus() {
 
     const restartMetrics = [];
     const upMetrics = [];
+    const thresholdMetrics = [];
 
     for (const containerInfo of containers) {
       const container = docker.getContainer(containerInfo.Id);
@@ -19,6 +20,10 @@ async function getRestartCountsForPrometheus() {
       // Add restart count metric for the container
       const restartCount = inspectData.RestartCount;
       const containerName = containerInfo.Names[0].replace(/^\//, ""); // Remove leading slash from the name
+      const memoryPercentageThreshold =
+        inspectData.Config.Labels.memory_alert_threshold_percentage ?? "0";
+      const cpuPercentageThreshold =
+        inspectData.Config.Labels.cpu_alert_threshold_percentage ?? "0";
 
       // Escape any special characters in container names for Prometheus format
       const escapedName = containerName.replace(/"/g, '\\"');
@@ -27,6 +32,12 @@ async function getRestartCountsForPrometheus() {
       );
       upMetrics.push(
         `docker_container_up{name="${escapedName}"} ${inspectData.State.Running ? "1" : "0"}`,
+      );
+      thresholdMetrics.push(
+        `docker_container_resource_threshold{name="${escapedName}",resource="memory"} ${memoryPercentageThreshold}`,
+      );
+      thresholdMetrics.push(
+        `docker_container_resource_threshold{name="${escapedName}",resource="cpu"} ${cpuPercentageThreshold}`,
       );
     }
 
@@ -37,6 +48,10 @@ async function getRestartCountsForPrometheus() {
     metrics += "\n# HELP docker_container_up Status of Docker containers\n";
     metrics += "# TYPE docker_container_up gauge\n";
     metrics += upMetrics.join("\n");
+    metrics +=
+      "\n# HELP docker_container_resource_threshold Alerting threshold of containers\n";
+    metrics += "# TYPE docker_container_resource_threshold gauge\n";
+    metrics += thresholdMetrics.join("\n");
 
     return metrics;
   } catch (error) {

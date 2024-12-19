@@ -62,8 +62,8 @@ docker run -d \
 
 ### Docker packaging
 ```shell
-docker build --platform=linux/amd64 -t clearc2/docker-event-listener:0.0.5 .
-docker push clearc2/docker-event-listener:0.0.5
+docker build --platform=linux/amd64 -t clearc2/docker-event-listener:0.0.6 .
+docker push clearc2/docker-event-listener:0.0.6
 ```
 
 ### Prometheus metrics
