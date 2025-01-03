@@ -74,6 +74,7 @@ The exporter at port `:3003/metrics` exports the following:
 ```sh
 # TYPE docker_container_restart_count counter
 # TYPE docker_container_up gauge
+# TYPE docker_container_resource_threshold gauge - with label of {resource="cpu|memory"}
 ```
 
 ### Testing
