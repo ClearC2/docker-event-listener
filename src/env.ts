@@ -30,6 +30,11 @@ const envSchema = z.object({
     .transform((v) => {
       return v ?? "/var/run/docker.sock";
     }),
+
+  PORT: z
+    .string()
+    .optional()
+    .transform((v) => (v ? Number(v) : 3003)),
 });
 
 export const env = envSchema.parse(process.env);

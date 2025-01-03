@@ -61,7 +61,7 @@ async function getRestartCountsForPrometheus() {
 }
 
 // Example: Expose a simple HTTP server for Prometheus to scrape
-export function serveMetrics() {
+export function serveMetrics(port: number) {
   return http
     .createServer(async (req, res) => {
       if (req.url === "/metrics") {
@@ -78,9 +78,9 @@ export function serveMetrics() {
         res.end("Not Found");
       }
     })
-    .listen(3003, () => {
+    .listen(port, () => {
       console.log(
-        "Prometheus metrics server is running on http://localhost:3003/metrics",
+        `Prometheus metrics server is running on http://localhost:${port}/metrics`,
       );
     });
 }

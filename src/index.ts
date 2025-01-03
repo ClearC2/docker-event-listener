@@ -90,4 +90,4 @@ startEventListener().catch((err) => {
   process.exit(1);
 });
 
-serveMetrics();
+serveMetrics(env.PORT);

@@ -12,6 +12,7 @@ TARGET_API_ENDPOINT=http://localhost:6089/api/docker/event
 TARGET_API_TOKEN=abc
 CONTAINER_EVENTS=start,stop,die
 DOCKER_SOCKET_PATH=/var/run/docker.sock
+PORT=3003
 ```
 
 - `DOCKER_HOST_ID` - Some unique identifier to correlate the events to a Docker host.
@@ -20,7 +21,8 @@ DOCKER_SOCKET_PATH=/var/run/docker.sock
 - `TARGET_API_TOKEN` - Will be included as `token` in the request payload.
 - `CONTAINER_EVENTS` - A comma delimitted list of which events to listen to. A complete list of events can be found [here](https://docs.docker.com/reference/cli/docker/system/events/#containers).
 - `DOCKER_SOCKET_PATH` - Where the Docker socket lives.
-
+- `PORT` - The port the prometheus metrics will be served on.
+- 
 ## Setup
 Install the dependencies
 
@@ -57,13 +59,13 @@ docker run -d \
   --env-file /srv/docker-event-listener/app.env
   -v /var/run/docker.sock:/var/run/docker.sock \
   -p 3003:3003 \
-  clearc2/docker-event-listener:0.0.2
+  clearc2/docker-event-listener:0.0.7
   ```
 
 ### Docker packaging
 ```shell
-docker build --platform=linux/amd64 -t clearc2/docker-event-listener:0.0.6 .
-docker push clearc2/docker-event-listener:0.0.6
+docker build --platform=linux/amd64 -t clearc2/docker-event-listener:0.0.7 .
+docker push clearc2/docker-event-listener:0.0.7
 ```
 
 ### Prometheus metrics
@@ -81,4 +83,4 @@ To test if the restart count goes up, you can forcefully kill a container that *
 docker exec <container-id> kill 1
 ```
 
-Then visit the metricts endpoint: http://localhost:3003/metrics
+Then visit the metrics endpoint: http://localhost:3003/metrics
