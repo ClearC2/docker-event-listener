@@ -77,6 +77,16 @@ The exporter at port `:3003/metrics` exports the following:
 # TYPE docker_container_resource_threshold gauge - with label of {resource="cpu|memory"}
 ```
 
+Containers should have the following labels. The label values should contain the percentage at which an alert should fire:
+```
+cpu_alert_threshold_percentage = 75
+cpu_alert_threshold_percentage = 85
+```
+
+This translates to:
+- "Alert when the container is using > 75% of its CPU limit"
+- "Alert when the container is using > 85% of its memory limit"
+
 ### Testing
 To test if the restart count goes up, you can forcefully kill a container that **has a restart policy**.
 
